@@ -7,20 +7,15 @@ import 'bootstrap/dist/css/bootstrap.css'
   
 
 const Users = () => {
- 
-    const [quantity, setCounter] = useState(api.users.fetchAll().length)
-      const[people, setPeople]=useState(api.users.fetchAll())
-  
-   
-    const colorForQuantity = () => {
+      const[people, setPeople]=useState(api.users.fetchAll()) 
+    const colorForQuantity = (number) => {
         let classes = 'badge m-2 '
-        classes+=  quantity===0?'bg-warning':'bg-primary'
+        classes+=  number===0?'bg-warning':'bg-primary'
         return classes
     }
-    const handleDelete = (userId) => {
-        setCounter((prevState) => prevState - 1)   
-           setPeople(prevState=>prevState.filter(elem=>elem!==userId))
-       console.log(userId)      
+
+    const handleDelete = (elemId) => {
+        setPeople(prevState => prevState.filter((elem) => elem._id !== elemId ))  
     }
 
 
@@ -28,16 +23,29 @@ const Users = () => {
         let classes = `badge m-2 bg-${color}` 
         return classes
     } 
-    const russianLanguage = () => {  
-        return quantity === 2 || quantity === 3 || quantity === 4?'человека':'человек' 
+    
+    const lastElement = (number) => {
+        const newArray = String(number).split('')
+        const lastElement = Number(newArray[newArray.length - 1])
+        const someElement = [2, 3, 4].some((item) => item === lastElement)
+        if (someElement && newArray.indexOf(String(lastElement)) === 0) {
+            return 'человека'
+        }
+        if (someElement && Number(newArray[newArray.length - 2]) === 1) {
+            return 'человек'
+        }
+        else {
+            return 'человек'
+        }
     }
+    
    
  
-    const quantityOfPeople = () => {
-        return quantity === 0 ? 'Никто с тобой не тусанет' : `${quantity} ${russianLanguage()} тусанет с тобой сегодня`
+    const quantityOfPeople = (number) => {
+        return number === 0 ? 'Никто с тобой не тусанет' : `${number} ${lastElement(people.length)} тусанет с тобой сегодня`
     }
-    const table = () => {
-        if(quantity!==0)
+    const table = (number) => {
+        if(number!==0)
         return  <table className="table">
         <thead>
           <tr>
@@ -50,12 +58,15 @@ const Users = () => {
           </tr>
         </thead>
         <tbody>     
-                        {people.map((elem) => (
-                            
+                {people.map((elem) => (
+                 
+
       <tr key={elem._id}>
-          <td scope="col">{elem.name}</td>
+                                <td>{elem.name}</td>
+                               
                                 <th scope="col">
-                                    <ul >{elem.qualities.map((quality) => (
+                            <ul >{elem.qualities.map((quality) => (
+                            
                                         <li key={quality._id} className={colorForTable(quality.color)} >
                                             {quality.name}
                                         </li>
@@ -63,12 +74,11 @@ const Users = () => {
                                     )}
                                     </ul>
                                 </th>
-                                <td scope="col">{[elem.profession].map((prof) => (prof.name))}</td>
-                                <td scope="col">{elem.completedMeetings}</td>
-                                <td scope="col">{elem.rate + ' /5'}</td>
-                                <td scope="col"><button className='btn btn-danger m-2' onClick={()=>handleDelete(elem)}>delete</button></td>
+                        <td>{[elem.profession].map((prof) => ( prof.name ))}</td>
+                                <td>{elem.completedMeetings}</td>
+                                <td>{elem.rate + ' /5'}</td>
+                                <td><button className='btn btn-danger m-2' onClick={()=>handleDelete(elem._id)}>delete</button></td>
                             </tr>
-                            
     ))}        
         </tbody>
             </table>
@@ -76,8 +86,8 @@ const Users = () => {
 
     return (
         <>   
-        <h1 className={colorForQuantity()}>{quantityOfPeople()}</h1>    
-     {table()}
+        <h1 className={colorForQuantity(people.length)}>{quantityOfPeople(people.length)}</h1>    
+     {table(people.length)}
         </>
         )
 }
