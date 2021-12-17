@@ -1,18 +1,10 @@
-import React, { useState } from "react";
+import React from "react"
 
-
-import api from '../api'
-import 'bootstrap/dist/css/bootstrap.css'
 
   
 
 const Users = () => {
-    const [people, setPeople] = useState(api.users.fetchAll()) 
-    
-    const handleDelete = (elemId) => {
-        setPeople(prevState => prevState.filter((elem) => elem._id !== elemId ))  
-    }
-    
+
     const lastElement = (number) => {
         const newArray = String(number).split('')
         const lastElement = Number(newArray[newArray.length - 1])
@@ -74,6 +66,8 @@ const Users = () => {
 
         </>
         )
+   
+   
 }
 export default Users
 
