@@ -8,7 +8,6 @@ import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 
 const Users = ({ people, ...props }) => {
-    console.log(people[2].profession);
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
@@ -29,10 +28,10 @@ const Users = ({ people, ...props }) => {
         setSelectedProf();
     };
     const filteredUsers = selectedProf
-        ? people.filter((user) => user.profession === selectedProf)
+        ? people.filter((user) => user.profession._id === selectedProf._id)
         : people;
     const count = filteredUsers.length;
-    console.log(count);
+    console.log(filteredUsers);
     console.log("selectedProf", selectedProf);
     const userCrop = paginate(currentPage, pageSize, filteredUsers);
     return (
