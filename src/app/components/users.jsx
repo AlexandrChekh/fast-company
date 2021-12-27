@@ -31,8 +31,6 @@ const Users = ({ people, ...props }) => {
         ? people.filter((user) => user.profession._id === selectedProf._id)
         : people;
     const count = filteredUsers.length;
-    console.log(filteredUsers);
-    console.log("selectedProf", selectedProf);
     const userCrop = paginate(currentPage, pageSize, filteredUsers);
     return (
         <div className="d-flex">
