@@ -5,13 +5,7 @@ import TableBody from "./tableBody";
 import BookMark from "./bookmark";
 import QualitiesList from "./qualitiesList";
 import Table from "./table";
-const UsersTable = ({
-    users,
-    onSort,
-    selectedSort,
-    onToggle,
-    onDelete
-}) => {
+const UsersTable = ({ users, onSort, selectedSort, onToggle, onDelete }) => {
     const columns = {
         name: { path: "name", name: "Имя" },
 
