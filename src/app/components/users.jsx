@@ -102,10 +102,16 @@ const Users = () => {
             </div>
         );
     }
-    return <button className="btn btn-primary m-3" type="button" disabled>
-        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        <span className="sr-only">Loading...</span>
-    </button>;
+    return (
+        <button className="btn btn-primary m-3" type="button" disabled>
+            <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+            ></span>
+            <span className="sr-only">Loading...</span>
+        </button>
+    );
 };
 Users.propTypes = {
     people: PropTypes.array
