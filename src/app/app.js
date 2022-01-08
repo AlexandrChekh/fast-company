@@ -5,11 +5,10 @@ import {
     Redirect
 } from "react-router-dom/cjs/react-router-dom.min";
 import NavBar from "./components/navBar";
-import Users from "./components/users";
 import Login from "./components/login";
 import Main from "./components/main";
 import NotFound from "./components/not-found";
-
+import Users from "./components/users";
 function App() {
     return (
         <div>
