@@ -8,17 +8,18 @@ import api from "../api";
 import Paginate from "../utils/paginate";
 import _ from "lodash";
 import Loading from "./loading";
-
 const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 6;
+    const [searchItems, setSearchItems] = useState("");
     const [people, setPeople] = useState();
-
+    const [people2, setPeople2] = useState();
     useEffect(() => {
         api.users.fetchAll().then((data) => setPeople(data));
+        api.users.fetchAll().then((data) => setPeople2(data));
     }, []);
     const handleDelete = (elemId) => {
         setPeople((prevState) =>
@@ -32,6 +33,18 @@ const UsersList = () => {
             )
         );
     };
+    const clearFilter = () => {
+        setSelectedProf();
+    };
+    const hahdleChange = ({ target }) => {
+        setSearchItems(target.value);
+        const reg = new RegExp(target.value, "i");
+        const regResult = people2.map((elem) => elem.name.match(reg));
+        const filteredArr = regResult.filter((item) => item !== null);
+        const arrayOfName = filteredArr.map((item, i) => filteredArr[i].input);
+        setPeople(people2.filter(item => arrayOfName.includes(item.name)));
+        clearFilter();
+    };
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfessions(data));
     }, []);
@@ -42,10 +55,9 @@ const UsersList = () => {
         setCurrentPage(pageIndex);
     };
     const handleProfessionsSelect = (item) => {
+        if (searchItems !== "") setSearchItems("");
         setSelectedProf(item);
-    };
-    const clearFilter = () => {
-        setSelectedProf();
+        setPeople(people2);
     };
     const handleSort = (item) => {
         setSortBy(item);
@@ -61,7 +73,6 @@ const UsersList = () => {
             [sortBy.order]
         );
         const userCrop = Paginate(currentPage, pageSize, sortedUsers);
-
         return (
             <>
                 <div className="d-flex">
@@ -84,7 +95,12 @@ const UsersList = () => {
                     )}
                     <div className="d-flex flex-column">
                         <SearchStatus length={count} />
-
+                        <input
+                        type="search"
+                        placeholder="Search..."
+                        onChange={hahdleChange}
+                        value={searchItems}
+                        ></input>
                         {count > 0 && (
                             <UsersTable
                                 users={userCrop}

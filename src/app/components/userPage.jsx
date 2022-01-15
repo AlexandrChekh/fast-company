@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loading from "./loading";
-
-const UserPage = ({ user }) => {
+import api from "../api";
+import QualitiesList from "./qualitiesList";
+const UserPage = ({ usersId }) => {
+    const [user, setUser] = useState();
+    useEffect(() => {
+        api.users.getById(usersId).then((data) => setUser(data));
+    }, [usersId]);
     const history = useHistory();
     const handleSave = () => {
         history.push("/users");
@@ -15,17 +20,9 @@ const UserPage = ({ user }) => {
                     <ul className="list-group">
                         <li>{user.name}</li>
                         <li>{`Профессия: ${user.profession.name}`} </li>
-
-                        <li>
-                            {user.qualities.map((item) => (
-                                <span
-                                    className={"badge m-1 bg-" + item.color}
-                                    key={item._id}
-                                >
-                                    {item.name}
-                                </span>
-                            ))}
-                        </li>
+                        <div>
+                            {<QualitiesList qualities={user.qualities} />}
+                        </div>
                         <li>{`completedMeetings: ${user.completedMeetings}`}</li>
                         <li>{`Rate: ${user.rate}`}</li>
                     </ul>
@@ -41,6 +38,6 @@ const UserPage = ({ user }) => {
     );
 };
 UserPage.propTypes = {
-    user: PropTypes.object
+    usersId: PropTypes.string.isRequired
 };
 export default UserPage;
