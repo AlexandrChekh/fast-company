@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
-import Loading from "./loading";
-import api from "../api";
-import QualitiesList from "./qualitiesList";
+import Loading from "../../common/loading";
+import api from "../../../api";
+import Qualities from "../../ui/qualities";
 const UserPage = ({ usersId }) => {
     const [user, setUser] = useState();
     useEffect(() => {
@@ -11,7 +11,7 @@ const UserPage = ({ usersId }) => {
     }, [usersId]);
     const history = useHistory();
     const handleSave = () => {
-        history.push("/users");
+        history.push(`/users/${user._id}/${user.name}`);
     };
     return (
         <>
@@ -20,16 +20,11 @@ const UserPage = ({ usersId }) => {
                     <ul className="list-group">
                         <li>{user.name}</li>
                         <li>{`Профессия: ${user.profession.name}`} </li>
-                        <div>
-                            {<QualitiesList qualities={user.qualities} />}
-                        </div>
+                        <div>{<Qualities qualities={user.qualities} />}</div>
                         <li>{`completedMeetings: ${user.completedMeetings}`}</li>
                         <li>{`Rate: ${user.rate}`}</li>
                     </ul>
-
-                    <button onClick={() => handleSave()}>
-                        Все пользователи
-                    </button>
+                    <button onClick={() => handleSave()}>Изменить</button>
                 </>
             ) : (
                 <Loading />

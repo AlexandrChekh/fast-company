@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Pagination from "./pagination";
+import Pagination from "../../common/pagination";
 import PropTypes from "prop-types";
-import GroupList from "./groupList";
-import SearchStatus from "./searchStatus";
-import UsersTable from "./usersTable";
-import api from "../api";
-import Paginate from "../utils/paginate";
+import GroupList from "../../common/groupList";
+import SearchStatus from "../../ui/searchStatus";
+import UsersTable from "../../ui/usersTable";
+import api from "../../../api";
+import Paginate from "../../../utils/paginate";
 import _ from "lodash";
-import Loading from "./loading";
-const UsersList = () => {
+import Loading from "../../common/loading";
+const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
@@ -42,7 +42,7 @@ const UsersList = () => {
         const regResult = people2.map((elem) => elem.name.match(reg));
         const filteredArr = regResult.filter((item) => item !== null);
         const arrayOfName = filteredArr.map((item, i) => filteredArr[i].input);
-        setPeople(people2.filter(item => arrayOfName.includes(item.name)));
+        setPeople(people2.filter((item) => arrayOfName.includes(item.name)));
         clearFilter();
     };
     useEffect(() => {
@@ -96,10 +96,10 @@ const UsersList = () => {
                     <div className="d-flex flex-column">
                         <SearchStatus length={count} />
                         <input
-                        type="search"
-                        placeholder="Search..."
-                        onChange={hahdleChange}
-                        value={searchItems}
+                            type="search"
+                            placeholder="Search..."
+                            onChange={hahdleChange}
+                            value={searchItems}
                         ></input>
                         {count > 0 && (
                             <UsersTable
@@ -126,7 +126,7 @@ const UsersList = () => {
     }
     return <Loading />;
 };
-UsersList.propTypes = {
+UsersListPage.propTypes = {
     people: PropTypes.array
 };
-export default UsersList;
+export default UsersListPage;
